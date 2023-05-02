@@ -38,40 +38,35 @@
 //Your code goes here 
 
 	const itemsContainer = document.querySelector('.items');
-    let isDragging = false;
-    let startPosition = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
+let isDragging = false;
+let startPosition = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
 
-    const handleMouseDown = (event) => {
-      isDragging = true;
-      startPosition = event.clientX;
-      prevTranslate = currentTranslate;
-      itemsContainer.style.cursor = 'grabbing';
-    }
+const handleTouchStart = (event) => {
+  isDragging = true;
+  startPosition = event.touches[0].clientX;
+  prevTranslate = currentTranslate;
+  itemsContainer.style.cursor = 'grabbing';
+}
 
-    const handleMouseMove = (event) => {
-      if (isDragging) {
-        const distance = event.clientX - startPosition;
-        currentTranslate = prevTranslate + distance;
-        itemsContainer.style.transform = `translateX(${currentTranslate}px)`;
-      }
-    }
+const handleTouchMove = (event) => {
+  if (isDragging) {
+    const distance = event.touches[0].clientX - startPosition;
+    currentTranslate = prevTranslate + distance;
+    itemsContainer.style.transform = `translateX(${currentTranslate}px)`;
+  }
+}
 
-    const handleMouseUp = () => {
-      isDragging = false;
-      itemsContainer.style.cursor = 'grab';
-    }
+const handleTouchEnd = () => {
+  isDragging = false;
+  itemsContainer.style.cursor = 'grab';
+}
 
-    const handleMouseLeave = () => {
-      isDragging = false;
-      itemsContainer.style.cursor = 'grab';
-    }
+itemsContainer.addEventListener('touchstart', handleTouchStart);
+itemsContainer.addEventListener('touchmove', handleTouchMove);
+itemsContainer.addEventListener('touchend', handleTouchEnd);
 
-    itemsContainer.addEventListener('mousedown', handleMouseDown);
-    itemsContainer.addEventListener('mousemove', handleMouseMove);
-    itemsContainer.addEventListener('mouseup', handleMouseUp);
-    itemsContainer.addEventListener('mouseleave', handleMouseLeave);
 </script>
 
   </body>
