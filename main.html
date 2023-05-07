@@ -36,35 +36,59 @@
 
 <script>
 //Your code goes here 
-	  const slider = document.querySelector('.items');
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+	let items = document.querySelectorAll('.item');
 
-  slider.addEventListener('mousedown', (e) => {
-    isDown = true;
-    slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-  });
 
-  slider.addEventListener('mouseleave', () => {
-    isDown = false;
-    slider.classList.remove('active');
-  });
+items.forEach((item) => {
+    item.setAttribute("draggable", "true");
 
-  slider.addEventListener('mouseup', () => {
-    isDown = false;
-    slider.classList.remove('active');
-  });
+    item.addEventListener("dragstart", () => {
+        item.classList.add("dragging");
+    });
 
-  slider.addEventListener('mousemove', (e) => {
-    if (!isDown) return;  // stop the fn from running
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 3;
-    slider.scrollLeft = scrollLeft - walk;
-  });
+    item.addEventListener("dragend", () => {
+        item.classList.remove("dragging");
+    });
+
+    item.addEventListener("dragenter", (e) => {
+       e.preventDefault();
+        item.classList.add("dropzone");
+
+
+    });
+
+    item.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+
+        item.classList.remove("dropzone");
+
+    });
+
+    item.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        console.log("dropped");
+       let some = document.querySelector(".dragging");
+       let dropzone = document.querySelector(".dropzone");
+       let someclass = some.getAttribute("class");
+       console.log(someclass);
+
+       let dropclass = dropzone.getAttribute("class");
+
+       let temp = someclass;
+
+       dropzone.setAttribute("class",someclass);
+       some.setAttribute("class",dropclass);
+
+
+       console.log(dropclass);
+
+
+
+
+      
+
+    });
+});
 </script>
 
   </body>
