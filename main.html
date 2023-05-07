@@ -37,36 +37,35 @@
 <script>
 //Your code goes here 
 
-	const itemsContainer = document.querySelector('.items');
-let isDragging = false;
-let startPosition = 0;
-let currentTranslate = 0;
-let prevTranslate = 0;
+	 const slider = document.querySelector('.items');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
 
-const handleTouchStart = (event) => {
-  isDragging = true;
-  startPosition = event.touches[0].clientX;
-  prevTranslate = currentTranslate;
-  itemsContainer.style.cursor = 'grabbing';
-}
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
 
-const handleTouchMove = (event) => {
-  if (isDragging) {
-    const distance = event.touches[0].clientX - startPosition;
-    currentTranslate = prevTranslate + distance;
-    itemsContainer.style.transform = `translateX(${currentTranslate}px)`;
-  }
-}
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
 
-const handleTouchEnd = () => {
-  isDragging = false;
-  itemsContainer.style.cursor = 'grab';
-}
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
 
-itemsContainer.addEventListener('touchstart', handleTouchStart);
-itemsContainer.addEventListener('touchmove', handleTouchMove);
-itemsContainer.addEventListener('touchend', handleTouchEnd);
-
+  slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;  // stop the fn from running
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 3;
+    slider.scrollLeft = scrollLeft - walk;
+  });
 </script>
 
   </body>
